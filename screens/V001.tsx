@@ -2,36 +2,32 @@
  * 一覧画面
  */
 import * as React from "react";
-import style from "../constants/CommonStyle";
 import {
-  ScrollView,
-  View,
-  FlatList,
-  Text,
-  Pressable,
-  TextInput,
   Button,
+  FlatList,
   Modal,
+  Pressable,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
 } from "react-native";
 
-import { SearchBar, FAB, Tab } from "@rneui/themed";
-import { LinkDataType, dummyLinkData } from "../constants/CommonType";
+import { DrawerHeaderProps } from "@react-navigation/drawer";
+import { FAB, Header, Image, SearchBar } from "@rneui/themed";
 import { getStorageData, saveStorageData } from "../components/saveStorage";
 import {
-  initialSettingData,
   initialLinkData,
+  initialSettingData,
 } from "../constants/CommonInitialData";
-import {
-  createDrawerNavigator,
-  DrawerHeaderProps,
-} from "@react-navigation/drawer";
+import { LinkDataType } from "../constants/CommonType";
 import V002 from "./V002";
 
 //ユーザーID入力部品
 type RegisterUserIdProps = {
   callback: () => void;
 };
-export const UserIdInput: React.FC<RegisterUserIdProps> = (props) => {
+export const UserIdInput: React.FC<RegisterUserIdProps> = (props: any) => {
   const [userId, setUserId] = React.useState<string>("");
   const registerData = async () => {
     saveStorageData("SETTINGDATA", { ...initialSettingData, userId: userId });
@@ -122,53 +118,80 @@ const V001: React.FC<V001Props> = (props) => {
   };
 
   return (
-    <ScrollView>
-      <View>
-        <SearchBar
-          value={searchWord}
-          onChangeText={(val) => setSearchWord(val)}
-        />
-        <FlatList
-          data={searchData(linkList)}
-          keyExtractor={(item) => item.dataId}
-          numColumns={5}
-          renderItem={({ item }) => {
-            return (
-              <Pressable onPress={() => openEditScreen(item)}>
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: "column",
-                    margin: 1,
-                    backgroundColor: "blue",
-                  }}
-                >
-                  <Text
+    <View style={{ flex: 1 }}>
+      <Header
+        leftComponent={{
+          icon: "menu",
+          color: "#fff",
+          onPress: () => {
+            props.drawer?.navigation?.toggleDrawer();
+          },
+        }}
+        centerComponent={
+          <Image
+            source={require("../assets/logo-white.png")}
+            resizeMode="center"
+            style={{ height: "30px", width: "30px" }}
+          />
+        }
+        rightComponent={{}}
+      />
+      <ScrollView style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
+          <SearchBar
+            value={searchWord}
+            onChangeText={(val) => setSearchWord(val)}
+          />
+
+          <FlatList
+            style={{ flexGrow: 1 }}
+            data={searchData(linkList)}
+            keyExtractor={(item) => item.dataId}
+            numColumns={5}
+            renderItem={({ item }) => {
+              return (
+                <Pressable onPress={() => openEditScreen(item)}>
+                  <View
                     style={{
-                      fontSize: 20,
-                      fontWeight: "bold",
-                      color: "white",
+                      flex: 1,
+                      flexDirection: "column",
+                      margin: 1,
+                      backgroundColor: "blue",
                     }}
                   >
-                    {item.title.slice(0, 1)}
-                  </Text>
-                </View>
-              </Pressable>
-            );
-          }}
-        ></FlatList>
-        <Button title="新規作成" onPress={() => openRegisterScreen()} />
-      </View>
-      <Modal visible={openEdit}>
-        <V002
-          linkData={linkDataV001 || initialLinkData}
-          callback={() => callBackEditScreen()}
-        />
-      </Modal>
-      <Modal visible={openRegisterUserId}>
-        <UserIdInput callback={() => callBackRegisterUserId()} />
-      </Modal>
-    </ScrollView>
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        fontWeight: "bold",
+                        color: "white",
+                      }}
+                    >
+                      {item.title.slice(0, 1)}
+                    </Text>
+                  </View>
+                </Pressable>
+              );
+            }}
+          ></FlatList>
+        </View>
+        <Modal visible={openEdit}>
+          <V002
+            linkData={linkDataV001 || initialLinkData}
+            callback={() => callBackEditScreen()}
+          />
+        </Modal>
+        <Modal visible={openRegisterUserId}>
+          <UserIdInput callback={() => callBackRegisterUserId()} />
+        </Modal>
+      </ScrollView>
+      <FAB
+        visible={true}
+        icon={{ name: "add", color: "white" }}
+        color="blue"
+        onPress={() => openRegisterScreen()}
+        placement="right"
+      />
+    </View>
   );
 };
 

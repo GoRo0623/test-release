@@ -6,19 +6,27 @@ const storage = new Storage({
 });
 
 export const saveStorageData = async <T1>(keyword: string, saveData: T1) => {
-  await storage.save({
-    key: keyword,
-    data: saveData,
-  });
+  try {
+    await storage.save({
+      key: keyword,
+      data: saveData,
+    });
+  } finally {
+    //
+  }
 };
 
 export const getStorageData = async (keyword: string) => {
-  let returnData: any;
-  await storage
-    .load({ key: keyword })
-    .then((res) => {
-      returnData = res;
-    })
-    .catch((err) => console.warn(err));
-  return returnData;
+  try {
+    let returnData: any;
+    await storage
+      .load({ key: keyword })
+      .then((res) => {
+        returnData = res;
+      })
+      .catch((err) => console.warn(err));
+    return returnData;
+  } finally {
+    //
+  }
 };
