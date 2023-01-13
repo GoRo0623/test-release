@@ -1,15 +1,16 @@
-const { getDefaultConfig } = require("metro-config");
+const { getDefaultConfig } = require("expo/metro-config");
 
 module.exports = (async () => {
-  const {
-    resolver: { sourceExts },
-  } = await getDefaultConfig();
-  return {
-    transformer: {
-      babelTransformerPath: require.resolve("react-native-sass-transformer"),
-    },
-    resolver: {
-      sourceExts: [...sourceExts, "scss", "sass"],
-    },
-  };
+  const config = await getDefaultConfig(__dirname);
+  const {transformer, resolver} = config;
+  config.transformer = {
+    ...transformer,
+    babelTransformerPath: require.resolve("react-native-sass-transformer"),
+};
+config.resolver = {
+    ...resolver,
+    sourceExts: [...resolver.sourceExts, "scss", "sass"],
+};
+
+return config;
 })();
