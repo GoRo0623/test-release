@@ -223,7 +223,7 @@ const V002: React.FC<V002Props> = (props) => {
           />
           {/* URL（複数） */}
           <Text>{"URL"}</Text>
-          <FlatList
+          {/* <FlatList
             data={linkData.url}
             keyExtractor={(item, index) => String(index)}
             numColumns={1}
@@ -250,7 +250,7 @@ const V002: React.FC<V002Props> = (props) => {
                 </View>
               );
             }}
-          ></FlatList>
+          ></FlatList> */}
         </View>
       </ScrollView>
     </RootSiblingParent>

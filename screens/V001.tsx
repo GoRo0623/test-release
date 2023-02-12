@@ -22,27 +22,7 @@ import {
 } from "../constants/CommonInitialData";
 import { LinkDataType } from "../constants/CommonType";
 import V002 from "./V002";
-
-//ユーザーID入力部品
-type RegisterUserIdProps = {
-  callback: () => void;
-};
-export const UserIdInput: React.FC<RegisterUserIdProps> = (props: any) => {
-  const [userId, setUserId] = React.useState<string>("");
-  const registerData = async () => {
-    saveStorageData("SETTINGDATA", { ...initialSettingData, userId: userId });
-    return props.callback();
-  };
-  return (
-    <ScrollView>
-      <View>
-        <Text>{"ユーザーIDを登録してください。"}</Text>
-        <TextInput value={userId} onChangeText={(val) => setUserId(val)} />
-        <Button title="登録" onPress={() => registerData()} />
-      </View>
-    </ScrollView>
-  );
-};
+import CV001 from "./CV001";
 
 type V001Props = {
   drawer?: DrawerHeaderProps;
@@ -131,7 +111,7 @@ const V001: React.FC<V001Props> = (props) => {
           <Image
             source={require("../assets/logo-white.png")}
             resizeMode="center"
-            style={{ height: "30px", width: "30px" }}
+            //style={{ height: "30px", width: "30px" }}
           />
         }
         rightComponent={{}}
@@ -143,7 +123,7 @@ const V001: React.FC<V001Props> = (props) => {
             onChangeText={(val) => setSearchWord(val)}
           />
 
-          <FlatList
+          {/* <FlatList
             style={{ flexGrow: 1 }}
             data={searchData(linkList)}
             keyExtractor={(item) => item.dataId}
@@ -172,7 +152,7 @@ const V001: React.FC<V001Props> = (props) => {
                 </Pressable>
               );
             }}
-          ></FlatList>
+          ></FlatList> */}
         </View>
         <Modal visible={openEdit}>
           <V002
@@ -180,8 +160,10 @@ const V001: React.FC<V001Props> = (props) => {
             callback={() => callBackEditScreen()}
           />
         </Modal>
-        <Modal visible={openRegisterUserId}>
-          <UserIdInput callback={() => callBackRegisterUserId()} />
+        <Modal visible={openRegisterUserId}
+          animationType="slide"
+          transparent={true}>
+          <CV001 callback={() => callBackRegisterUserId()} />
         </Modal>
       </ScrollView>
       <FAB

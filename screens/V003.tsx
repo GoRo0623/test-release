@@ -41,7 +41,7 @@ const V003: React.FC<V003Props> = (props) => {
           <Image
             source={require("../assets/logo-white.png")}
             resizeMode="center"
-            style={{ height: "30px", width: "30px" }}
+            //style={{ height: "30px", width: "30px" }}
           />
         }
         rightComponent={{}}

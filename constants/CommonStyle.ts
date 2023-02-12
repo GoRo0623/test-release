@@ -3,7 +3,21 @@ import CommonStyleDark from "./CommonStyleDark";
 import CommonStyleLight from "./CommonStyleLight";
 import useColorScheme from "../hooks/useColorScheme";
 
-const commonStyle =
-  useColorScheme() == "light" ? CommonStyleLight : CommonStyleDark;
+/**
+ * 共通デザイン
+ */
+const CommonStyle = StyleSheet.create({
+  //共通
+  smallModal: {
+    height: 100,
+    paddingLeft: 20,
+    paddingRight: 20
+  }
+});
+/**
+ * 全デザイン
+ */
+const AllStyles = StyleSheet.create(
+  {...(useColorScheme() == "light" ? CommonStyleLight : CommonStyleDark), ...CommonStyle});
 
-export default commonStyle;
+export default AllStyles;
