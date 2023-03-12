@@ -23,12 +23,9 @@ import {
 import { LinkDataType } from "../constants/CommonType";
 import V002 from "./V002";
 import CV001 from "./CV001";
+import AllStyles from "../constants/CommonStyle";
 
-type V001Props = {
-  drawer?: DrawerHeaderProps;
-};
-
-const V001: React.FC<V001Props> = (props) => {
+const V001: React.FC = (props:any) => {
   //初期表示
   const [linkList, setLinkList] = React.useState<LinkDataType[]>([]);
   //編集画面表示非表示
@@ -98,33 +95,41 @@ const V001: React.FC<V001Props> = (props) => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={AllStyles.gridPage}>
       <Header
         leftComponent={{
           icon: "menu",
           color: "#fff",
           onPress: () => {
-            props.drawer?.navigation?.toggleDrawer();
+            props?.navigation?.toggleDrawer();
           },
         }}
         centerComponent={
           <Image
             source={require("../assets/logo-white.png")}
             resizeMode="center"
-            //style={{ height: "30px", width: "30px" }}
+          //style={{ height: "30px", width: "30px" }}
           />
         }
         rightComponent={{}}
+        backgroundColor={"#ff1463"}
+        style={{borderWidth: 0}}
       />
-      <ScrollView style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
           <SearchBar
             value={searchWord}
             onChangeText={(val) => setSearchWord(val)}
+            containerStyle={AllStyles.searchBar}
+            style={{borderColor: "red"}}
+            inputContainerStyle={AllStyles.searchBarInput}
+            inputStyle={AllStyles.searchBarInput}
+            searchIcon={AllStyles.searchBarIcon}
+            cancelIcon={AllStyles.searchBarIcon}
+            clearIcon={AllStyles.searchBarIcon}
           />
 
-          {/* <FlatList
-            style={{ flexGrow: 1 }}
+          <FlatList
+            style={{ flexGrow: 1, paddingTop: 10 }}
             data={searchData(linkList)}
             keyExtractor={(item) => item.dataId}
             numColumns={5}
@@ -133,17 +138,22 @@ const V001: React.FC<V001Props> = (props) => {
                 <Pressable onPress={() => openEditScreen(item)}>
                   <View
                     style={{
-                      flex: 1,
-                      flexDirection: "column",
-                      margin: 1,
-                      backgroundColor: "blue",
+                      backgroundColor: "#ff1463",
+                      width: "18vmin",
+                      height: "18vmin",
+                      borderRadius: 50,
+                      margin: 2,
+                      alignItems: "center",
+                      paddingTop: "25%",
                     }}
                   >
                     <Text
                       style={{
-                        fontSize: 20,
+                        fontSize: 30,
                         fontWeight: "bold",
                         color: "white",
+                        textAlign: "center",
+                        textAlignVertical: "center",
                       }}
                     >
                       {item.title.slice(0, 1)}
@@ -152,7 +162,7 @@ const V001: React.FC<V001Props> = (props) => {
                 </Pressable>
               );
             }}
-          ></FlatList> */}
+          ></FlatList> 
         </View>
         <Modal visible={openEdit}>
           <V002
@@ -165,11 +175,10 @@ const V001: React.FC<V001Props> = (props) => {
           transparent={true}>
           <CV001 callback={() => callBackRegisterUserId()} />
         </Modal>
-      </ScrollView>
       <FAB
         visible={true}
         icon={{ name: "add", color: "white" }}
-        color="blue"
+        color={"#ff1463"}
         onPress={() => openRegisterScreen()}
         placement="right"
       />

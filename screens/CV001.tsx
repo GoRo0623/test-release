@@ -4,25 +4,14 @@
 import * as React from "react";
 import {
   Button,
-  FlatList,
-  Modal,
-  Pressable,
-  ScrollView,
   Text,
   TextInput,
   View,
-  StyleSheet
-
 } from "react-native";
-
-import { DrawerHeaderProps } from "@react-navigation/drawer";
-import { FAB, Header, Image, SearchBar } from "@rneui/themed";
-import { getStorageData, saveStorageData } from "../components/saveStorage";
+import {saveStorageData } from "../components/saveStorage";
 import {
-  initialLinkData,
   initialSettingData,
 } from "../constants/CommonInitialData";
-import { LinkDataType } from "../constants/CommonType";
 import AllStyles from "../constants/CommonStyle";
 
 //ユーザーID入力部品
@@ -37,35 +26,16 @@ const CV001: React.FC<RegisterUserIdProps> = (props: any) => {
       return props.callback();
     };
     return (
-        <View style={styles.backgroundModal}>
-          <div style={styles.smallModal}>
+        <View style={AllStyles.backgroundModal}>
+          <div style={AllStyles.smallModal}>
           <Text style={{color: "white"}}>{"ユーザーIDを登録してください。"}</Text>
-          <TextInput value={userId} onChangeText={(val) => setUserId(val)} style={{backgroundColor: "#ff99ad", borderColor:"#ff0033", borderStyle:"solid", borderWidth:2, width: "100%"}}/>
-          <div style={styles.samallModalButton}>
-          <Button title="登録" onPress={() => registerData()} color={"#ff0033"}/>
+          <TextInput value={userId} onChangeText={(val) => setUserId(val)} style={AllStyles.smallModalInput}/>
+          <div style={AllStyles.samallModalButton}>
+          <Button title="登録" onPress={() => registerData()} color={"#ff1463"}/>
           </div>
           </div>
         </View>
     );
   };
-  const styles = StyleSheet.create({
-    smallModal: {
-      backgroundColor: "#333333",
-      margin: 30,
-      padding: 20,
-      borderColor:"#ff0033", borderStyle:"solid", borderWidth:2
-      //textAlign:"center",
-    },
-    samallModalButton: {
-      paddingTop:20,
-      paddingLeft:"70%",
-      width: "30%",
-    },
-    backgroundModal: {
-      flex:1,
-      backgroundColor: "black 0.5",
-      justifyContent: "center"
-      //opacity: 0.5,
-    }
-  });
+
   export default CV001;

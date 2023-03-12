@@ -10,11 +10,7 @@ import { getStorageData } from "../components/saveStorage";
 import { initialSettingData } from "../constants/CommonInitialData";
 import { SettingDataType } from "../constants/CommonType";
 
-type V003Props = {
-  drawer?: any;
-};
-
-const V003: React.FC<V003Props> = (props) => {
+const V003: React.FC = (props: any) => {
   //画面表示データ
   const [settingData, setSettingData] =
     React.useState<SettingDataType>(initialSettingData);
@@ -34,7 +30,7 @@ const V003: React.FC<V003Props> = (props) => {
           icon: "menu",
           color: "#fff",
           onPress: () => {
-            props.drawer?.navigation?.openDrawer();
+            props?.navigation?.openDrawer();
           },
         }}
         centerComponent={

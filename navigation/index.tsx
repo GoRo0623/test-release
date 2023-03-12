@@ -23,7 +23,7 @@ export default function Navigation({
 }) {
   return (
     <NavigationContainer
-      theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+      //theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
       <DrawerPages />
     </NavigationContainer>
@@ -39,26 +39,13 @@ const DrawerPages = () => {
       initialRouteName="V001"
       screenOptions={{
         headerShown: false,
-        swipeEnabled: true,
+        swipeEnabled: false,
         drawerHideStatusBarOnOpen: true,
-        //drawerIcon: { color: "red" },
         drawerType: "front",
         keyboardDismissMode: "on-drag",
       }}
       backBehavior="history"
     >
-      {/* <Drawer.Screen
-        name="V001"
-        component={V001}
-        options={{
-          headerTitle: "一覧",
-          drawerLabel: "一覧",
-          drawerIcon: ({ color }) => (
-            <Icon name="home" color={color} size={26} />
-          ),
-        }}
-      /> */}
-
       <Drawer.Screen
         name="V001Tab"
         component={TabPages}
@@ -144,7 +131,8 @@ const TabPages: React.FC = (props: any) => {
             ),
             title: "一覧",
             tabBarShowLabel: false,
-            tabBarActiveBackgroundColor: "blue",
+            tabBarActiveBackgroundColor: "#ff1463",
+            tabBarInactiveBackgroundColor: "#333333",
           }}
         />
         <TabPage.Screen
@@ -156,7 +144,8 @@ const TabPages: React.FC = (props: any) => {
             ),
             title: "一覧",
             tabBarShowLabel: false,
-            tabBarActiveBackgroundColor: "blue",
+            tabBarActiveBackgroundColor: "#ff1463",
+            tabBarInactiveBackgroundColor: "#333333",
           }}
         />
       </TabPage.Navigator>
