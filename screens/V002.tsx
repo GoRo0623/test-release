@@ -2,6 +2,7 @@
  * 編集画面
  */
 import * as React from "react";
+import * as Linking from 'expo-linking';
 import style from "../constants/CommonStyle";
 import {
   ScrollView,
@@ -9,11 +10,12 @@ import {
   FlatList,
   Text,
   TextInput,
-  Button,
-  Linking,
+  //Button,
   Alert,
   ToastAndroid,
+  
 } from "react-native";
+import { FAB, Header, Image, SearchBar, Tab, Button } from "@rneui/themed";
 import { RootSiblingParent } from "react-native-root-siblings";
 import { LinkDataType, SettingDataType } from "../constants/CommonType";
 import { getStorageData, saveStorageData } from "../components/saveStorage";
@@ -198,36 +200,87 @@ const V002: React.FC<V002Props> = (props) => {
 
   return (
     <RootSiblingParent>
-      <ScrollView>
-        <View>
-          <Button title="戻る" onPress={() => closeEditScreen()} />
-          <Button title="更新" onPress={() => registerLinkData()} />
-          <Button
+      {/* <ScrollView> */}
+            <Header
+        leftComponent={{
+          icon: "chevron-left",
+          color: "#fff",
+          onPress: () => {
+             closeEditScreen();
+          },
+        }}
+        centerComponent={
+          <Image
+            source={require("../assets/logo-white.png")}
+            resizeMode="center"
+          //style={{ height: "30px", width: "30px" }}
+          />
+        }
+        rightComponent={{}}
+        backgroundColor={"#ff1463"}
+        style={{borderWidth: 0}}
+      />
+        <View style={{    flex: 1,
+    backgroundColor: "#333333",}}>
+          {/* <Button title="戻る" onPress={() => closeEditScreen()} /> */}
+          {/* <Button title="更新" onPress={() => registerLinkData()} /> */}
+          {/* <Button
             title="削除"
             onPress={() => deleteLinkData()}
             disabled={!linkData.dataId || linkData.delFlag == 1}
-          />
+          /> */}
           {/* タイトル */}
-          <Text>{"Title"}</Text>
+        <Text
+          style={{
+            backgroundColor: "#ff146",
+            width: "100%",
+            color: "white",
+            margin: "10px",
+          }}
+        >{"Title"}</Text>
           <TextInput
             value={linkData.title}
-            onChangeText={(val) => setLinkData({ ...linkData, title: val })}
+          onChangeText={(val) => setLinkData({ ...linkData, title: val })}
+                              style={{    backgroundColor: "#ff99ad",
+    borderColor: "#ff0033",
+    borderStyle: "solid",
+    borderWidth: 2,
+    width: "100%",}}
           />
           {/* 作成者が設定できる任意のID */}
-          <Text>{"ID"}</Text>
+        <Text
+                    style={{
+            backgroundColor: "#ff146",
+            width: "100%",
+            color: "white",
+            margin: "10px",
+          }}
+        >{"ID"}</Text>
           <TextInput
             value={linkData.outerDataId}
             onChangeText={(val) =>
               setLinkData({ ...linkData, outerDataId: val })
             }
+                              style={{    backgroundColor: "#ff99ad",
+    borderColor: "#ff0033",
+    borderStyle: "solid",
+    borderWidth: 2,
+    width: "100%",}}
           />
           {/* URL（複数） */}
-          <Text>{"URL"}</Text>
-          {/* <FlatList
+        <Text
+                    style={{
+            backgroundColor: "#ff146",
+            width: "100%",
+            color: "white",
+            margin: "10px",
+          }}
+        >{"URL"}</Text>
+          <FlatList
             data={linkData.url}
             keyExtractor={(item, index) => String(index)}
             numColumns={1}
-            renderItem={({ item, index }) => {
+          renderItem={({ item, index }) => {
               return (
                 <View
                   style={{
@@ -241,18 +294,46 @@ const V002: React.FC<V002Props> = (props) => {
                     value={item}
                     onChangeText={(val) => setUrlString(val, index)}
                     onBlur={() => addUrlInputArea()}
+                    style={{    backgroundColor: "#ff99ad",
+    borderColor: "#ff0033",
+    borderStyle: "solid",
+    borderWidth: 2,
+    width: "100%",}}
                   />
                   <Button
                     title={"開く"}
                     onPress={() => openURL(item)}
                     disabled={!item}
+                    color={"#ff1463"}
                   />
                 </View>
               );
             }}
-          ></FlatList> */}
-        </View>
-      </ScrollView>
+          ></FlatList>
+      </View>
+      <View
+        style={{
+          height: 42,
+          width: '100%',
+          position: 'absolute',
+          bottom: 0,
+          backgroundColor: 'red',
+          display:"flex",
+          flex: 1,
+          flexDirection: "row"
+        }}
+      >
+                  <Button
+            title="削除"
+            onPress={() => deleteLinkData()}
+          disabled={!linkData.dataId || linkData.delFlag == 1}
+          containerStyle={{ width: "50%"}} 
+          color={"#ff1463"}
+          />
+        <Button title="更新" onPress={() => registerLinkData()} containerStyle={{width: "50%"}} color={"#ff1463"}/>
+
+      </View>
+      {/* </ScrollView> */}
     </RootSiblingParent>
   );
 };

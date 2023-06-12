@@ -133,7 +133,10 @@ const V001: React.FC = (props:any) => {
             data={searchData(linkList)}
             keyExtractor={(item) => item.dataId}
             numColumns={5}
-            renderItem={({ item }) => {
+          renderItem={({ item }) => {
+            if (item.delFlag == 1) {
+              return (<></>);
+              }
               return (
                 <Pressable onPress={() => openEditScreen(item)}>
                   <View
