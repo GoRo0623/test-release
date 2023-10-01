@@ -30,6 +30,9 @@ const CommonStyle = StyleSheet.create({
   fab: {
     backgroundColor: "#ff6699",
   },
+  disableStyle: {
+    opacity: 0.5,
+  },
 });
 /**
  * ライトモード、ダークモード判定

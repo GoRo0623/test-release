@@ -31,6 +31,18 @@ const CommonStyleLight = StyleSheet.create({
     backgroundColor: "black 0.5",
     justifyContent: "center",
   },
+  listStyle: {
+    backgroundColor: "#333333",
+    borderBottomColor: "#ff1463",
+    borderWidth: 1,
+    borderStyle: "solid",
+  },
+  listFont: {
+    color: "white",
+  },
+  listTitleStyle: {
+    maxWidth: "50%",
+  },
 });
 
 export default CommonStyleLight;

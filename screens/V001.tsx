@@ -2,30 +2,20 @@
  * 一覧画面
  */
 import * as React from "react";
-import {
-  Button,
-  FlatList,
-  Modal,
-  Pressable,
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { FlatList, Modal, Pressable, Text, View } from "react-native";
 
-import { DrawerHeaderProps } from "@react-navigation/drawer";
+import { ParamListBase, useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { FAB, Header, Image, SearchBar } from "@rneui/themed";
-import { getStorageData, saveStorageData } from "../components/saveStorage";
-import {
-  initialLinkData,
-  initialSettingData,
-} from "../constants/CommonInitialData";
-import { LinkDataType } from "../constants/CommonType";
-import V002 from "./V002";
-import CV001 from "./CV001";
+import { getStorageData } from "../components/saveStorage";
+import { initialLinkData } from "../constants/CommonInitialData";
 import AllStyles from "../constants/CommonStyle";
+import { LinkDataType } from "../constants/CommonType";
+import { TabPages } from "../navigation";
+import CV001 from "./CV001";
+import V002 from "./V002";
 
-const V001: React.FC = (props:any) => {
+const V001: React.FC = (props: any, browserUrl?: string[]) => {
   //初期表示
   const [linkList, setLinkList] = React.useState<LinkDataType[]>([]);
   //編集画面表示非表示
@@ -33,10 +23,22 @@ const V001: React.FC = (props:any) => {
   //引数：リンクデータ
   const [linkDataV001, setLinkDataV001] = React.useState<LinkDataType>();
 
+  const nav = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+
   //初期表示処理
   React.useEffect(() => {
     checkRegisteredUserId();
     setLinkDataList();
+    if (checkBrowserData()) {
+      //登録画面を表示する
+      const ini = initialLinkData;
+      if (browserUrl != undefined) {
+        const url = browserUrl;
+        ini.url = [...url];
+      }
+      setLinkDataV001(ini);
+      setOpenEdit(true);
+    }
   }, []);
   //ユーザーID登録済確認
   const [openRegisterUserId, setOpenRegisterUserId] =
@@ -50,10 +52,17 @@ const V001: React.FC = (props:any) => {
   const callBackRegisterUserId = () => {
     setOpenRegisterUserId(false);
   };
+  const checkBrowserData = () => {
+    if ((browserUrl?.length || 0) > 0) {
+      return true;
+    }
+    return false;
+  };
 
   //新規追加ボタン
   const openRegisterScreen = () => {
-    setLinkDataV001(initialLinkData);
+    const ini = initialLinkData;
+    setLinkDataV001(ini);
     setOpenEdit(true);
   };
 
@@ -95,47 +104,48 @@ const V001: React.FC = (props:any) => {
   };
 
   return (
-    <View style={AllStyles.gridPage}>
-      <Header
-        leftComponent={{
-          icon: "menu",
-          color: "#fff",
-          onPress: () => {
-            props?.navigation?.toggleDrawer();
-          },
-        }}
-        centerComponent={
-          <Image
-            source={require("../assets/logo-white.png")}
-            resizeMode="center"
-          //style={{ height: "30px", width: "30px" }}
-          />
-        }
-        rightComponent={{}}
-        backgroundColor={"#ff1463"}
-        style={{borderWidth: 0}}
-      />
+    <>
+      <View style={AllStyles.gridPage}>
+        <Header
+          leftComponent={{
+            icon: "menu",
+            color: "#fff",
+            onPress: () => {
+              //props?.navigation?.setParams({ displayIndex: 0 });
+              props?.navigation?.toggleDrawer();
+            },
+          }}
+          centerComponent={
+            <Image
+              source={require("../assets/ChouChouRoot_main_icon.svg")}
+              resizeMode="center"
+              style={{ height: 25, width: 25 }}
+            />
+          }
+          rightComponent={{}}
+          backgroundColor={"#ff1463"}
+          style={{ borderWidth: 0 }}
+        />
         <View style={{ flex: 1 }}>
           <SearchBar
             value={searchWord}
             onChangeText={(val) => setSearchWord(val)}
             containerStyle={AllStyles.searchBar}
-            style={{borderColor: "red"}}
+            style={{ borderColor: "red" }}
             inputContainerStyle={AllStyles.searchBarInput}
             inputStyle={AllStyles.searchBarInput}
             searchIcon={AllStyles.searchBarIcon}
             cancelIcon={AllStyles.searchBarIcon}
             clearIcon={AllStyles.searchBarIcon}
           />
-
           <FlatList
             style={{ flexGrow: 1, paddingTop: 10 }}
             data={searchData(linkList)}
             keyExtractor={(item) => item.dataId}
             numColumns={5}
-          renderItem={({ item }) => {
-            if (item.delFlag == 1) {
-              return (<></>);
+            renderItem={({ item }) => {
+              if (item.delFlag == 1 || item.title == "") {
+                return <></>;
               }
               return (
                 <Pressable onPress={() => openEditScreen(item)}>
@@ -165,7 +175,7 @@ const V001: React.FC = (props:any) => {
                 </Pressable>
               );
             }}
-          ></FlatList> 
+          ></FlatList>
         </View>
         <Modal visible={openEdit}>
           <V002
@@ -173,19 +183,24 @@ const V001: React.FC = (props:any) => {
             callback={() => callBackEditScreen()}
           />
         </Modal>
-        <Modal visible={openRegisterUserId}
+        <Modal
+          visible={openRegisterUserId}
           animationType="slide"
-          transparent={true}>
+          transparent={true}
+        >
           <CV001 callback={() => callBackRegisterUserId()} />
         </Modal>
-      <FAB
-        visible={true}
-        icon={{ name: "add", color: "white" }}
-        color={"#ff1463"}
-        onPress={() => openRegisterScreen()}
-        placement="right"
-      />
-    </View>
+        <FAB
+          visible={true}
+          icon={{ name: "add", color: "white" }}
+          color={"#ff1463"}
+          onPress={() => openRegisterScreen()}
+          placement="right"
+          style={{ paddingBottom: 60 }}
+        />
+      </View>
+      <TabPages indexProp={0} />
+    </>
   );
 };
 

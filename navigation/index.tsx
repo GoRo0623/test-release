@@ -1,31 +1,25 @@
-import {
-  DarkTheme,
-  DefaultTheme,
-  NavigationContainer,
-  useNavigation,
-} from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 //import { Icon } from "@rneui/themed";
 import * as React from "react";
-import { ColorSchemeName, View, Text } from "react-native";
+import { ColorSchemeName, View } from "react-native";
 
 import V001 from "../screens/V001";
 import V003 from "../screens/V003";
 
-import {
-  createDrawerNavigator,
-  DrawerHeaderProps,
-} from "@react-navigation/drawer";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
 export default function Navigation({
   colorScheme,
+  browserUrl,
 }: {
   colorScheme: ColorSchemeName;
+  browserUrl: string[];
 }) {
   return (
     <NavigationContainer
-      //theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+    //theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
-      <DrawerPages />
+      <DrawerPages {...browserUrl} />
     </NavigationContainer>
   );
 }
@@ -33,23 +27,28 @@ export default function Navigation({
  *ドロワー設定
  */
 const Drawer = createDrawerNavigator();
-const DrawerPages = () => {
+const DrawerPages = (props: any) => {
   return (
     <Drawer.Navigator
-      initialRouteName="V001"
+      initialRouteName={"V001Tab"}
       screenOptions={{
         headerShown: false,
         swipeEnabled: false,
         drawerHideStatusBarOnOpen: true,
         drawerType: "front",
         keyboardDismissMode: "on-drag",
+        drawerContentStyle: { backgroundColor: "#333333" },
+        //drawerActiveTintColor: "#ff1463",
+        drawerLabelStyle: { color: "white" },
+        drawerActiveBackgroundColor: "#ff1463",
       }}
-      backBehavior="history"
+      backBehavior="none"
     >
       <Drawer.Screen
         name="V001Tab"
-        component={TabPages}
-        initialParams={{ displayIndex: 0 }}
+        component={(prop: any) => (
+          <V001 {...prop} browserUrl={props?.browserUrl} />
+        )}
         options={{
           headerTitle: "一覧",
           drawerLabel: "一覧",
@@ -60,8 +59,7 @@ const DrawerPages = () => {
       />
       <Drawer.Screen
         name="V003Tab"
-        component={TabPages}
-        initialParams={{ displayIndex: 1 }}
+        component={V003}
         options={{
           headerTitle: "設定",
           drawerLabel: "設定",
@@ -73,82 +71,60 @@ const DrawerPages = () => {
     </Drawer.Navigator>
   );
 };
+//
+import { ParamListBase } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
 /**
  *タブ設定
  */
-import { Tab } from "@rneui/themed";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Button } from "@rneui/themed";
 import Icon from "react-native-vector-icons/AntDesign";
-const TabPages: React.FC = (props: any) => {
-  //props?.navigation?.openDrawer();
-  console.log(props);
-  const param: any = props?.route?.params || {
-    displayIndex: 0,
-  };
-  const [index, setIndex] = React.useState<number>(param?.displayIndex || 0);
-  const TabPage = createBottomTabNavigator();
-  React.useEffect(() => {
-    props?.navigation?.toggleDrawer();
-  }, []);
+export const TabPages: React.FC<{ indexProp: number }> = (prop: {
+  indexProp: number;
+}) => {
+  //画面遷移部品を取得
+  const nav = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+  const index = prop.indexProp;
   return (
     <>
-      {/* 表示内容 */}
-      {/* <View style={{ height: "100%" }}>
-        {index == 0 && <V001 drawer={props} />}
-        {index == 1 && <V003 drawer={props} />}
-      </View> */}
-      {/* タブ */}
-      {/* <Tab
-        value={index}
-        onChange={(e) => setIndex(e)}
-        indicatorStyle={{
-          backgroundColor: "white",
-          height: 3,
+      <View
+        style={{
+          height: 60,
+          width: "100%",
+          position: "absolute",
+          bottom: 0,
+          backgroundColor: "ff1463",
+          display: "flex",
+          flex: 1,
+          flexDirection: "row",
+          borderTopWidth: 1,
+          borderTopColor: "white",
         }}
-        variant="default"
       >
-        <Tab.Item
+        <Button
           title="一覧"
-          titleStyle={{ fontSize: 12 }}
-          icon={<Icon name="appstore1" color="white" />}
+          onPress={() => {
+            nav.navigate("V001Tab");
+          }}
+          containerStyle={{ width: "50%", borderRadius: 0 }}
+          color={prop.indexProp == 0 ? "#ff1463" : "#333333"}
+          titleStyle={{ fontSize: 12, color: "white" }}
+          icon={<Icon name="appstore1" color="white" size={25} />}
+          iconPosition="top"
         />
-        <Tab.Item
+        <Button
           title="設定"
-          titleStyle={{ fontSize: 12 }}
-          icon={<Icon name="setting" color="white" />}
-        />
-      </Tab> */}
-      <TabPage.Navigator
-        initialRouteName={index == 0 ? "V001" : "V003"}
-        screenOptions={{ headerShown: false }}
-      >
-        <TabPage.Screen
-          name="V001"
-          component={V001}
-          options={{
-            tabBarIcon: ({ size }) => (
-              <Icon name="appstore1" color="white" size={size} />
-            ),
-            title: "一覧",
-            tabBarShowLabel: false,
-            tabBarActiveBackgroundColor: "#ff1463",
-            tabBarInactiveBackgroundColor: "#333333",
+          onPress={() => {
+            nav.navigate("V003Tab");
           }}
+          containerStyle={{ width: "50%", borderRadius: 0 }}
+          color={prop.indexProp == 1 ? "#ff1463" : "#333333"}
+          titleStyle={{ fontSize: 12, color: "white" }}
+          icon={<Icon name="setting" color="white" size={25} />}
+          iconPosition="top"
         />
-        <TabPage.Screen
-          name="V003"
-          component={V003}
-          options={{
-            tabBarIcon: ({ size }) => (
-              <Icon name="setting" color="white" size={size} />
-            ),
-            title: "一覧",
-            tabBarShowLabel: false,
-            tabBarActiveBackgroundColor: "#ff1463",
-            tabBarInactiveBackgroundColor: "#333333",
-          }}
-        />
-      </TabPage.Navigator>
+      </View>
     </>
   );
 };
