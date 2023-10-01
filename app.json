@@ -1,18 +1,19 @@
 {
   "expo": {
-    "name": "chouchou",
-    "slug": "chouchou",
-    "version": "1.0.0",
+    "name": "chouchouroot",
+    "slug": "meltymothcafe-chouchouroot",
+    "privacy": "unlisted",
+    "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/ChouChouRoot_main_icon.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#333333"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 10000
     },
     "assetBundlePatterns": [
       "**/*"
@@ -22,10 +23,10 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./assets/ChouChouRoot_main_icon2.png",
+        "backgroundColor": "#ff1463"
       },
-      "package": "com.rorebego.chouchou",
+      "package": "com.meltymothcafe.chouchouroot",
       "intentFilters": [
         {
           "action": "VIEW",
